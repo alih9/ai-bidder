@@ -1,0 +1,22 @@
+{
+  "profiles": [
+    {
+      "id": "1",
+      "name": "Ali Hassan",
+      "gitHub": "https://github.com/alih9",
+      "title": "Senior Full Stack Developer",
+      "skills": ["React", "Node.js", "TypeScript", "AWS"],
+      "experience": "8 years",
+      "summary": "Experienced developer with a passion for building scalable applications"
+    },
+    {
+      "id": "2",
+      "name": "Azhar Zafar",
+      "gitHub": "https://github.com/alih9",
+      "title": "UX/UI Designer",
+      "skills": ["Figma", "Adobe XD", "User Research", "Prototyping"],
+      "experience": "5 years",
+      "summary": "Creative designer focused on user-centered design principles"
+    }
+  ]
+}
