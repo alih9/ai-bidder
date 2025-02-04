@@ -11,7 +11,6 @@ const loadProfiles = (): UserProfile[] => {
     return JSON.parse(data) as UserProfile[];
   } catch (error) {
     console.log(error);
-
     return [];
   }
 };
@@ -20,12 +19,14 @@ const saveProfiles = (profiles: UserProfile[]) => {
   fs.writeFileSync(filePath, JSON.stringify(profiles, null, 2));
 };
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: Request) {
   try {
-    const id = params.id;
+    const url = new URL(req.url);
+    const id = url.pathname.split("/").pop(); // Extract ID from URL
+    if (!id) {
+      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+    }
+
     const updatedProfile: UserProfile = await req.json();
     const profiles = loadProfiles();
 
@@ -57,15 +58,15 @@ export async function PUT(
     );
   }
 }
-
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: Request) {
   try {
-    const id = params.id;
-    let profiles = loadProfiles();
+    const url = new URL(req.url);
+    const id = url.pathname.split("/").pop();
+    if (!id) {
+      return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+    }
 
+    let profiles = loadProfiles();
     const initialLength = profiles.length;
     profiles = profiles.filter((profile) => profile.id !== id);
 
