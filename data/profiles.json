@@ -1,22 +1,43 @@
-{
-  "profiles": [
-    {
-      "id": "1",
-      "name": "Ali Hassan",
-      "gitHub": "https://github.com/alih9",
-      "title": "Senior Full Stack Developer",
-      "skills": ["React", "Node.js", "TypeScript", "AWS"],
-      "experience": "8 years",
-      "summary": "Experienced developer with a passion for building scalable applications"
-    },
-    {
-      "id": "2",
-      "name": "Azhar Zafar",
-      "gitHub": "https://github.com/alih9",
-      "title": "UX/UI Designer",
-      "skills": ["Figma", "Adobe XD", "User Research", "Prototyping"],
-      "experience": "5 years",
-      "summary": "Creative designer focused on user-centered design principles"
-    }
-  ]
-}
+[
+  {
+    "id": "1",
+    "name": "Ali Hassan",
+    "gitHub": "https://github.com/alih9",
+    "title": "Senior Full Stack Developer",
+    "skills": [
+      "React",
+      "Node.js",
+      "TypeScript",
+      "AWS"
+    ],
+    "experience": "8 years",
+    "summary": "Experienced developer with a passion for building scalable applications"
+  },
+  {
+    "id": "2",
+    "name": "Azhar Zafar",
+    "gitHub": "https://github.com/alih9",
+    "title": "UX/UI Designer",
+    "skills": [
+      "Figma",
+      "Adobe XD",
+      "User Research",
+      "Prototyping"
+    ],
+    "experience": "5 years",
+    "summary": "Creative designer focused on user-centered design principles"
+  },
+  {
+    "id": "00eef06e-fd7f-4a5f-b6ba-3d0c7fe1cd1c",
+    "name": "Farooq safdar",
+    "gitHub": "Magni illum vel eiu",
+    "title": "Possimus magni et n",
+    "skills": [
+      "a",
+      "s",
+      "sdf sdf"
+    ],
+    "experience": "Quos voluptate autem",
+    "summary": "Vitae deserunt minim"
+  }
+]
