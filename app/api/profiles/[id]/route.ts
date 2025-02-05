@@ -50,10 +50,8 @@ export async function PUT(req: Request) {
       profiles,
     });
   } catch (error) {
-    console.log(error);
-
     return NextResponse.json(
-      { error: "Failed to update profile" },
+      { error: "Failed to update profile" + error },
       { status: 500 }
     );
   }
@@ -80,10 +78,8 @@ export async function DELETE(req: Request) {
       profiles,
     });
   } catch (error) {
-    console.log(error);
-
     return NextResponse.json(
-      { error: "Failed to delete profile" },
+      { error: "Failed to delete profile" + error },
       { status: 500 }
     );
   }
