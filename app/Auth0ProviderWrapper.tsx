@@ -14,6 +14,8 @@ export default function Auth0ProviderWrapper({
       clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID!}
       authorizationParams={{
         redirect_uri: process.env.NEXT_PUBLIC_AUTH_URL!,
+        audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
+        scope: "openid profile email",
       }}
     >
       {children}

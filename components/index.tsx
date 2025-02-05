@@ -1,3 +1,4 @@
 import Loading from "./Loading";
+import ProtectedRoute from "./ProtectedRoute";
 
-export { Loading };
+export { Loading, ProtectedRoute };
