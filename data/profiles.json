@@ -3,42 +3,38 @@
     "id": "1",
     "name": "Ali Hassan",
     "gitHub": "https://github.com/alih9",
-    "title": "Senior Full Stack Developer",
+    "title": "Senior Full Stack Developer | React | Next.js | Nextjs | TypeScript | AI integration",
     "skills": [
+      "Senior Web Developer",
       "React",
+      "Next.js",
       "Node.js",
       "TypeScript",
-      "AWS"
+      "Nest.js",
+      "AWS",
+      "Serverless",
+      "PostgreSQL",
+      "MySQL",
+      "MongoDB",
+      "GraphQL",
+      "REST API",
+      "Tailwind CSS",
+      "Docker",
+      "CI/CD",
+      "SST",
+      "Lambda",
+      "DynamoDB",
+      "OpenAI API",
+      "Deep seek",
+      "LangChain",
+      "Vector Databases",
+      "LLMs",
+      "AI Chatbots",
+      "AI-powered Search",
+      "Prompt Engineering",
+      "Machine Learning APIs"
     ],
     "experience": "5 years",
-    "summary": "Experienced developer with a passion for building scalable applications"
-  },
-  {
-    "id": "2",
-    "name": "Azhar Zafar",
-    "gitHub": "https://github.com/alih9",
-    "title": "UX/UI Designer",
-    "skills": [
-      "Figma",
-      "Adobe XD",
-      "User Research",
-      "Prototyping",
-      "s"
-    ],
-    "experience": "5 years",
-    "summary": "Creative designer focused on user-centered design principles"
-  },
-  {
-    "id": "00eef06e-fd7f-4a5f-b6ba-3d0c7fe1cd1c",
-    "name": "Farooq safdar",
-    "gitHub": "",
-    "title": "Possimus magni et n",
-    "skills": [
-      "React",
-      "Nextjs",
-      "sdf"
-    ],
-    "experience": "2 years",
-    "summary": ""
+    "summary": "Top-rated Upwork freelancer with 5+ years of experience, 40+ projects delivered, and 600+ hours worked, including collaborations with Fortune 200 companies. A Full Stack Developer passionate about building high-quality web and mobile applications, specializing in React, Next.js, Angular for front-end, Node.js, NestJS, Express for back-end, and MongoDB, PostgreSQL, MySQL for databases. Proficient in JavaScript, TypeScript, and AWS for scalable cloud solutions. I also specialize in AI-driven solutions, leveraging OpenAI API, LangChain, and vector databases like Pinecone to build intelligent chatbots, AI-powered search, and automation tools. Whether working independently or in teams, I focus on solving real-world problems and creating seamless user experiences. Let’s build something impactful!"
   }
 ]
