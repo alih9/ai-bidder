@@ -18,7 +18,15 @@ export default function Navigation() {
           </Link>
         </div>
         <button
-          onClick={() => logout()}
+          onClick={() =>
+            logout({
+              logoutParams: {
+                returnTo:
+                  process.env.NEXT_PUBLIC_AUTH_URL ||
+                  "https://ai-bidder.vercel.app",
+              },
+            })
+          }
           className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
         >
           Logout
