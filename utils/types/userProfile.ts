@@ -1,9 +1,11 @@
 export interface UserProfile {
-  id: string;
+  id?: string;
   name: string;
-  gitHub: string;
+  github_url: string;
   title: string;
   skills: string[];
   experience: string;
   summary: string;
+  created_at?: string;
+  updated_at?: string;
 }

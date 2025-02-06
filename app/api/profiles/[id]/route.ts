@@ -1,22 +1,16 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { UserProfile } from "@/utils/types/userProfile";
+import { supabase } from "@/lib/supabase";
 
-const filePath = path.join(process.cwd(), "data", "profiles.json");
+// Update profile
+const updateProfile = async (id: string, updates: Partial<UserProfile>) => {
+  const { data, error } = await supabase
+    .from("profiles")
+    .update(updates)
+    .eq("id", id)
+    .select();
 
-const loadProfiles = (): UserProfile[] => {
-  try {
-    const data = fs.readFileSync(filePath, "utf-8");
-    return JSON.parse(data) as UserProfile[];
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-};
-
-const saveProfiles = (profiles: UserProfile[]) => {
-  fs.writeFileSync(filePath, JSON.stringify(profiles, null, 2));
+  return { data: data?.[0], error };
 };
 
 export async function PUT(req: Request) {
@@ -27,28 +21,24 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
     }
 
-    const updatedProfile: UserProfile = await req.json();
-    const profiles = loadProfiles();
+    const profile: Partial<UserProfile> = await req.json();
 
-    const index = profiles.findIndex((p) => p.id === id);
-    if (index === -1) {
-      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
-    }
+    profile.skills =
+      profile?.skills?.length && profile?.skills?.length > 0
+        ? profile.skills
+            .join(",")
+            .split(/[,]+/)
+            .map((s) => s.trim())
+            .filter((s) => s)
+        : [];
 
-    updatedProfile.skills = updatedProfile.skills
-      .join(",")
-      .split(/[,]+/)
-      .map((s) => s.trim())
-      .filter((s) => s);
-
-    profiles[index] = { ...updatedProfile, id };
-
-    saveProfiles(profiles);
+    const { data, error } = await updateProfile(id, profile);
 
     return NextResponse.json({
       message: "Profile updated successfully",
-      profiles,
+      data,
     });
+    if (error) throw error;
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to update profile" + error },
@@ -56,6 +46,7 @@ export async function PUT(req: Request) {
     );
   }
 }
+
 export async function DELETE(req: Request) {
   try {
     const url = new URL(req.url);
@@ -63,23 +54,14 @@ export async function DELETE(req: Request) {
     if (!id) {
       return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
     }
-
-    let profiles = loadProfiles();
-    const initialLength = profiles.length;
-    profiles = profiles.filter((profile) => profile.id !== id);
-
-    if (profiles.length === initialLength) {
-      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
-    }
-
-    saveProfiles(profiles);
+    const { error } = await supabase.from("profiles").delete().eq("id", id);
+    if (error) throw error;
     return NextResponse.json({
       message: "Profile deleted successfully",
-      profiles,
     });
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to delete profile" + error },
+      { error: `Failed to delete profile: ${error}` },
       { status: 500 }
     );
   }

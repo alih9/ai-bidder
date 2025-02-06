@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import profilesData from "@/data/profiles.json";
 import { UserProfile } from "@/utils/types/userProfile";
 import { Copy, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -10,6 +9,8 @@ export default function ProposalPage() {
   const [profiles, setProfiles] = useState<UserProfile[]>([]);
   const [isLoadingProposal, setIsLoadingProposal] = useState(false);
   const [error, setError] = useState("");
+  const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
+
   const [formData, setFormData] = useState({
     profile: "",
     jobTitle: "",
@@ -18,8 +19,22 @@ export default function ProposalPage() {
     clientQuestions: "",
   });
 
+  const fetchProfiles = async () => {
+    setIsLoadingProfiles(true);
+    try {
+      const res = await fetch("/api/profiles");
+      const data = await res.json();
+      setProfiles(data);
+    } catch (err) {
+      console.error("Failed to load profiles", err);
+      setProfiles([]);
+    } finally {
+      setIsLoadingProfiles(false);
+    }
+  };
+
   useEffect(() => {
-    setProfiles(profilesData || []);
+    fetchProfiles();
   }, []);
 
   const handleChange = (
@@ -87,19 +102,27 @@ export default function ProposalPage() {
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Select Profile
               </label>
+
               <select
                 className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
                 name="profile"
                 value={formData.profile}
                 onChange={handleChange}
                 required
+                disabled={isLoadingProfiles}
               >
-                <option value="">Choose a profile</option>
-                {profiles.map((profile) => (
-                  <option key={profile.id} value={profile.id}>
-                    {profile.name} - {profile.title}
-                  </option>
-                ))}
+                {isLoadingProfiles ? (
+                  <option>Loading profiles...</option>
+                ) : (
+                  <>
+                    <option value="">Choose a profile</option>
+                    {profiles.map((profile) => (
+                      <option key={profile.id} value={profile.id}>
+                        {profile.name} - {profile.title}
+                      </option>
+                    ))}
+                  </>
+                )}
               </select>
             </div>
 

@@ -1,54 +1,53 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { supabase } from "@/lib/supabase";
 import { UserProfile } from "@/utils/types/userProfile";
 
-const filePath = path.join(process.cwd(), "data", "profiles.json");
-
-const loadProfiles = (): UserProfile[] => {
-  try {
-    const data = fs.readFileSync(filePath, "utf-8");
-    return JSON.parse(data) as UserProfile[];
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-};
-
-const saveProfiles = (profiles: UserProfile[]) => {
-  fs.writeFileSync(filePath, JSON.stringify(profiles, null, 2));
-};
-
 export async function GET() {
-  const profiles = loadProfiles();
-  return NextResponse.json(profiles);
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json(
+      { error: `Profile not found: ${error}` },
+      { status: 404 }
+    );
+  }
 }
 
 export async function POST(req: Request) {
   try {
-    const newProfile: UserProfile = await req.json();
-    const profiles = loadProfiles();
+    const profileData: UserProfile = await req.json();
 
-    if (!newProfile.id) {
-      newProfile.id = crypto.randomUUID();
-    }
-    newProfile.skills = newProfile.skills
+    profileData.skills = profileData.skills
       .join(",")
       .split(/[,]+/)
       .map((s) => s.trim())
       .filter((s) => s);
 
-    profiles.push(newProfile);
-    saveProfiles(profiles);
+    const { data, error } = await supabase
+      .from("profiles")
+      .insert([
+        {
+          name: profileData.name,
+          github_url: profileData.github_url,
+          title: profileData.title,
+          skills: profileData.skills,
+          experience: profileData.experience,
+          summary: profileData.summary,
+        },
+      ])
+      .select();
 
-    return NextResponse.json(
-      { message: "Profile added successfully", profiles },
-      { status: 201 }
-    );
+    if (error) throw error;
+
+    return NextResponse.json(data[0], { status: 201 });
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
-      { error: "Failed to save profile" },
+      { error: `Profile creation failed: ${error}` },
       { status: 500 }
     );
   }

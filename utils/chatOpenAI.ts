@@ -59,7 +59,7 @@ const chatOpenAIInvoke = async (
     jobSkills: formData.jobSkills || "To be inferred from job description",
     clientQuestions: formData.clientQuestions || "None provided",
     profileName: selectedProfile.name,
-    profileGitHub: selectedProfile.gitHub,
+    profileGitHub: selectedProfile.github_url,
     profileTitle: selectedProfile.title,
     profileSkills: selectedProfile.skills.join(", "),
     profileExperience: selectedProfile.experience,

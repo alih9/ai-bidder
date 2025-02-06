@@ -7,13 +7,16 @@ export default function ProfilesPage() {
   const [newProfile, setNewProfile] = useState<UserProfile>({
     id: "",
     name: "",
-    gitHub: "",
+    github_url: "",
     title: "",
     skills: [],
     experience: "",
     summary: "",
   });
-  useEffect(() => {
+  const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
+
+  const fetchProfiles = async () => {
+    setIsLoadingProfiles(true);
     fetch("/api/profiles")
       .then((res) => res.json())
       .then((data) => {
@@ -22,7 +25,12 @@ export default function ProfilesPage() {
       .catch((err) => {
         console.error("Failed to load profiles", err);
         setProfiles([]);
-      });
+      })
+      .finally(() => setIsLoadingProfiles(false));
+  };
+
+  useEffect(() => {
+    fetchProfiles();
   }, []);
 
   const handleInputChange = (
@@ -64,13 +72,13 @@ export default function ProfilesPage() {
       body: JSON.stringify(newProfile),
     })
       .then((res) => res.json())
-      .then((data) => setProfiles(data.profiles))
+      .then(() => fetchProfiles())
       .catch((err) => console.error("Failed to save profile", err));
 
     setNewProfile({
       id: "",
       name: "",
-      gitHub: "",
+      github_url: "",
       title: "",
       skills: [],
       experience: "",
@@ -84,7 +92,7 @@ export default function ProfilesPage() {
       ...profile,
       skills: Array.isArray(profile.skills) ? profile.skills : [],
     });
-    setEditId(profile.id);
+    setEditId(profile?.id ?? null);
   };
 
   const handleDeleteProfile = (id: string) => {
@@ -93,7 +101,7 @@ export default function ProfilesPage() {
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
-      .then((data) => setProfiles(data.profiles))
+      .then(() => fetchProfiles())
       .catch((err) => console.error("Failed to delete profile", err));
   };
 
@@ -138,8 +146,8 @@ export default function ProfilesPage() {
                 GitHub Profile URL
               </label>
               <input
-                name="gitHub"
-                value={newProfile.gitHub}
+                name="github_url"
+                value={newProfile.github_url}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                 placeholder="https://github.com/username"
@@ -201,7 +209,7 @@ export default function ProfilesPage() {
                   setNewProfile({
                     id: "",
                     name: "",
-                    gitHub: "",
+                    github_url: "",
                     title: "",
                     skills: [],
                     experience: "",
@@ -219,6 +227,10 @@ export default function ProfilesPage() {
 
         {/* Profiles List */}
         <div className="space-y-4">
+          {isLoadingProfiles && (
+            <div className="text-center text-blue-600">Loading profiles...</div>
+          )}
+
           {profiles.map((profile) => (
             <div
               key={profile.id}
@@ -243,9 +255,9 @@ export default function ProfilesPage() {
                     </span>
                   ))}
                 </div>
-                {profile.gitHub && (
+                {profile.github_url && (
                   <a
-                    href={profile.gitHub}
+                    href={profile.github_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-700 text-sm"
@@ -263,7 +275,7 @@ export default function ProfilesPage() {
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDeleteProfile(profile.id)}
+                  onClick={() => handleDeleteProfile(profile?.id ?? "")}
                   className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
                 >
                   Delete
